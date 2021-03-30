@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>kmvi</Authors>
+    <Company>kmvi</Company>
+    <Version>0.1.0</Version>
+    <Description>VBScript parser for .NET. Parses VBScript program into an abstract syntax tree.</Description>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/kmvi/vbscript-parser</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kmvi/vbscript-parser</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>vbscript parser</PackageTags>
+    <Copyright>Copyright (c) kmvi</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="VBSyntaxErrorMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VBSyntaxErrorMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="VBSyntaxErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>VBSyntaxErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
