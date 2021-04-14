@@ -31,7 +31,7 @@ for i = lbound(b) to ubound(b)
 next
 ";
 
-            var parser = new Parser(code, new ParsingOptions { SaveComments = true });
+            var parser = new VBScriptParser(code, new ParsingOptions { SaveComments = true });
             var program = parser.Parse();
         }
     }

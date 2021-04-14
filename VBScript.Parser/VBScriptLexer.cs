@@ -6,12 +6,12 @@ using System.Text;
 
 namespace VBScript.Parser
 {
-    public class Lexer
+    public class VBScriptLexer
     {
         private readonly int _length;
         private readonly StringBuilder _sb = new StringBuilder();
 
-        public Lexer(string code)
+        public VBScriptLexer(string code)
         {
             Code = code ?? throw new ArgumentNullException(nameof(code));
             _length = Code.Length;

@@ -12,7 +12,7 @@ namespace VBScript.Parser.Tests
         [Fact]
         public void Ctor_Null_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new Lexer(null!));
+            Assert.Throws<ArgumentNullException>(() => new VBScriptLexer(null!));
         }
 
         [Theory]
@@ -22,7 +22,7 @@ namespace VBScript.Parser.Tests
         [InlineData(" _   \t  \r  _ \t \r\n   _ \n \t  ")]
         public void SkipWhitespaces_Whitespaces_ShouldStopAtEnd(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             lexer.SkipWhitespaces();
             Assert.Equal(code.Length, lexer.Index);
         }
@@ -35,7 +35,7 @@ namespace VBScript.Parser.Tests
         [InlineData("  \t :", 4)]
         public void SkipWhitespaces_NewLines_ShouldStopOnNewLine(string code, int pos)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             lexer.SkipWhitespaces();
             Assert.Equal(pos, lexer.Index);
         }
@@ -50,7 +50,7 @@ namespace VBScript.Parser.Tests
         [InlineData("_\n_\n")]
         public void NextToken_Whitespaces_ShouldReturnEofToken(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsType<EofToken>(lexer.NextToken());
         }
 
@@ -61,7 +61,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidStringLiteral_ShouldReturnStringLiteralToken(
             string code, string expected, int start, int end)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<StringLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value);
             Assert.Equal(start, token.Start);
@@ -76,7 +76,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_InvalidStringLiteral_ThrowsUnterminatedStringConstant(
             string code, int line, int pos)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var ex = Assert.Throws<VBSyntaxErrorException>(() => lexer.NextToken());
             Assert.Equal(VBSyntaxErrorCode.UnterminatedStringConstant, ex.Code);
             Assert.Equal(line, ex.Line);
@@ -91,7 +91,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidDecIntLiteral_ShouldReturnIntLiteralToken(
             string code, int expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<DecIntegerLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value);
         }
@@ -102,7 +102,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidLongDecIntLiteral_ShouldReturnFloatLiteralToken(
             string code, double expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<FloatLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value, 9);
         }
@@ -114,7 +114,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_InvalidDecIntLiteral_ThrowsException(
             string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var ex = Assert.Throws<VBSyntaxErrorException>(() => lexer.NextToken());
             Assert.Equal(VBSyntaxErrorCode.ExpectedEndOfStatement, ex.Code);
             //Assert.Equal(line, ex.Line);
@@ -131,7 +131,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidHexIntLiteral_ShouldReturnIntLiteralToken(
             string code, int expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<HexIntegerLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value);
         }
@@ -142,7 +142,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidLongHexIntLiteral_ShouldReturnFloatLiteralToken(
             string code, double expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<HexIntegerLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value, 9);
         }
@@ -154,7 +154,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_InvalidHexIntLiteral_ThrowsException(
             string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var ex = Assert.Throws<VBSyntaxErrorException>(() => lexer.NextToken());
             Assert.Equal(VBSyntaxErrorCode.ExpectedEndOfStatement, ex.Code);
         }
@@ -168,7 +168,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidOctIntLiteral_ShouldReturnIntLiteralToken(
             string code, int expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<OctIntegerLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value);
         }
@@ -179,7 +179,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidLongOctIntLiteral_ShouldReturnFloatLiteralToken(
             string code, double expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<OctIntegerLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token.Value, 9);
         }
@@ -192,7 +192,7 @@ namespace VBScript.Parser.Tests
         [InlineData("&01234567y")]
         public void NextToken_InvalidOctIntLiteral_ThrowsException(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var ex = Assert.Throws<VBSyntaxErrorException>(() => lexer.NextToken());
             Assert.True(VBSyntaxErrorCode.ExpectedEndOfStatement == ex.Code ||
                 VBSyntaxErrorCode.SyntaxError == ex.Code);
@@ -208,7 +208,7 @@ namespace VBScript.Parser.Tests
         [InlineData(" _ \n_\n_\r_\r\n   \t ' test 5:43 \r\n", " test 5:43 ")]
         public void NextToken_ValidComment_ShouldReturnCommentToken(string code, string expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<CommentToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Comment);
         }
@@ -223,7 +223,7 @@ namespace VBScript.Parser.Tests
         [InlineData("  _ \r  \t \t \r\r\r::\n:   :  \n   \t")]
         public void NextToken_NewLines_ShouldReturnLineTerminationToken(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsAssignableFrom<LineTerminationToken>(lexer.NextToken());
             Assert.IsType<EofToken>(lexer.NextToken());
         }
@@ -251,7 +251,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidFloatLiteral_ShouldReturnFloatLiteralToken(
             string code, double expected)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<FloatLiteralToken>(lexer.NextToken());
             Assert.Equal(expected, token!.Value, 9);
         }
@@ -266,7 +266,7 @@ namespace VBScript.Parser.Tests
         public void NextToken_ValidTwoCharPunctuation_ShourdReturnValidPunctuationToken(
             string code, Punctuation type)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<PunctuationToken>(lexer.NextToken());
             Assert.Equal(type, token.Type);
         }
@@ -281,7 +281,7 @@ namespace VBScript.Parser.Tests
         [InlineData("Null_Null")]
         public void NextToken_ValidIdentifier_ReturnsIdentifier(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<IdentifierToken>(lexer.NextToken());
             Assert.Equal(code.Trim(), token.Name);
         }
@@ -291,7 +291,7 @@ namespace VBScript.Parser.Tests
         [InlineData("[#^&%^&()@[]")]
         public void NextToken_ValidExtendedIdentifier_ReturnsIdentifier(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<ExtendedIdentifierToken>(lexer.NextToken());
             Assert.Equal(code.Trim(), token.Name);
         }
@@ -303,7 +303,7 @@ namespace VBScript.Parser.Tests
         [InlineData("# \t Jul 7, 1992 #", "1992-07-07T00:00:00")]
         public void NextToken_ValidDateLiteral_ReturnsDate(string code, string dt)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             var token = Assert.IsType<DateLiteralToken>(lexer.NextToken());
             Assert.Equal(DateTime.Parse(dt), token.Value);
         }
@@ -314,7 +314,7 @@ namespace VBScript.Parser.Tests
         [InlineData("TrUe")]
         public void NextToken_TrueLiteral(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsType<TrueLiteralToken>(lexer.NextToken());
         }
 
@@ -324,7 +324,7 @@ namespace VBScript.Parser.Tests
         [InlineData("fAlsE")]
         public void NextToken_FalseLiteral(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsType<FalseLiteralToken>(lexer.NextToken());
         }
 
@@ -334,7 +334,7 @@ namespace VBScript.Parser.Tests
         [InlineData("NuLL")]
         public void NextToken_NullLiteral(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsType<NullLiteralToken>(lexer.NextToken());
         }
 
@@ -344,7 +344,7 @@ namespace VBScript.Parser.Tests
         [InlineData("EmPtY")]
         public void NextToken_EmptyLiteral(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsType<EmptyLiteralToken>(lexer.NextToken());
         }
 
@@ -354,7 +354,7 @@ namespace VBScript.Parser.Tests
         [InlineData("NoThIng")]
         public void NextToken_NothingLiteral(string code)
         {
-            var lexer = new Lexer(code);
+            var lexer = new VBScriptLexer(code);
             Assert.IsType<NothingLiteralToken>(lexer.NextToken());
         }
     }

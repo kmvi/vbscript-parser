@@ -6,23 +6,23 @@ using VBScript.Parser.Ast;
 
 namespace VBScript.Parser
 {
-    public class Parser
+    public class VBScriptParser
     {
         private readonly ParsingOptions _options;
-        private readonly Lexer _lexer;
+        private readonly VBScriptLexer _lexer;
         private Token _next;
         private Marker _startMarker;
         private Marker _lastMarker;
         private List<Comment> _comments = new();
         private bool _inWithBlock;
 
-        public Parser(string code)
+        public VBScriptParser(string code)
             : this(code, new())
         {
 
         }
 
-        public Parser(string code, ParsingOptions options)
+        public VBScriptParser(string code, ParsingOptions options)
         {
             if (code == null)
             {
@@ -30,7 +30,7 @@ namespace VBScript.Parser
             }
 
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _lexer = new Lexer(code);
+            _lexer = new VBScriptLexer(code);
 
             _startMarker = new Marker(0, _lexer.CurrentLine, 0);
             _lastMarker = new Marker(0, _lexer.CurrentLine, 0);

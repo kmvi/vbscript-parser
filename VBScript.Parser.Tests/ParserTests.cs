@@ -12,10 +12,10 @@ namespace VBScript.Parser.Tests
         [Fact]
         public void Ctor_NullArguments_ThrowsArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => new Parser(null!));
-            Assert.Throws<ArgumentNullException>(() => new Parser(null!, new()));
-            Assert.Throws<ArgumentNullException>(() => new Parser("", null!));
-            Assert.Throws<ArgumentNullException>(() => new Parser(null!, null!));
+            Assert.Throws<ArgumentNullException>(() => new VBScriptParser(null!));
+            Assert.Throws<ArgumentNullException>(() => new VBScriptParser(null!, new()));
+            Assert.Throws<ArgumentNullException>(() => new VBScriptParser("", null!));
+            Assert.Throws<ArgumentNullException>(() => new VBScriptParser(null!, null!));
         }
 
         [Theory]
@@ -24,7 +24,7 @@ namespace VBScript.Parser.Tests
         [InlineData("  :  \t  ' test comment \t \n \r \r\n \t ")]
         public void Parse_EmptyString_ReturnsEmptyAst(string code)
         {
-            var prg = new Parser(code).Parse();
+            var prg = new VBScriptParser(code).Parse();
             
             Assert.NotNull(prg);
             Assert.False(prg.OptionExplicit);
@@ -39,7 +39,7 @@ namespace VBScript.Parser.Tests
         [InlineData("  \t:::\n  \r\n  \t :' some text   \t \r\n:")]
         public void Parse_EmptyStringWithComments_ReturnsEmptyAstWithComments(string code)
         {
-            var prg = new Parser(code, new ParsingOptions { SaveComments = true }).Parse();
+            var prg = new VBScriptParser(code, new ParsingOptions { SaveComments = true }).Parse();
 
             Assert.NotNull(prg);
             Assert.False(prg.OptionExplicit);
@@ -54,7 +54,7 @@ namespace VBScript.Parser.Tests
         [InlineData("'test\noption explicit  'test ")]
         public void Parse_OptionExplicitString_ReturnsAstWithEmptyBody(string code)
         {
-            var prg = new Parser(code).Parse();
+            var prg = new VBScriptParser(code).Parse();
 
             Assert.NotNull(prg);
             Assert.True(prg.OptionExplicit);
